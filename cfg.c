@@ -4,7 +4,7 @@
 
 #include <mem.h>
 #include "cfg.h"
-#include "../../../../Program Files (x86)/mingw-w64/i686-8.1.0-posix-dwarf-rt_v6-rev0/mingw32/i686-w64-mingw32/include/stdio.h"
+#include <stdio.h>
 
 FILE *cfg;
 
