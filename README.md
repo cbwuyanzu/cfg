@@ -1,6 +1,6 @@
 # cfg
 loading configuration from a file
 
-example ./main heiheihei.ini wojiubaniheiheihei
+example ./main config.ini field1
 
-the program will load the field "wojiubaniheiheihei" from "heiheihei.ini"
+this program will load field1 from the file config.ini
