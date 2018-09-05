@@ -1,6 +1,6 @@
 # cfg
-loading configuration from a file
+loading settings from a configuration file
 
-example ./main config.ini field1
+example ./main config.ini field1 field2
 
-this program will load field1 from the file config.ini
+this program will load field1 field2 from the file config.ini
