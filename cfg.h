@@ -7,11 +7,38 @@
 
 #endif //CFG_CFG_H
 
-
+/******
+ *
+ * @param filename
+ * @return -1 false
+ *          0  success
+ */
 int cfgOpen(char *filename);
 
-int cfgGetString(char *pBuffer, char *pKey, char **ppValue);
-
+/*****
+ *
+ * @param pBuffer input stream
+ * @param pKey  key in the config file
+ * @param ppValue the pointer point to the value
+ * @return
+ */
+//int cfgGetString(char *pBuffer, char *pKey, char **ppValue);
+/******
+ *
+ * @param filename
+ * @return -1 false
+ *          0  success
+ */
 int cfgClose(void);
-//void cfgFilter(char *pInput, char *pOutput, char ignore);
-//int cfgStartWith(char *pString, char *pSubString);
+
+/*****
+ *
+ * @param pBuffer input stream
+ * @param pGroup group name
+ * @param pKey  key
+ * @param ppValue the pointer point to the value
+ * @return
+ */
+int cfgGetString(char *pBuffer, char *pGroup, char *pKey, char **ppValue);
+
+int cfgLocateGroup(char *pBuffer, char *pGroup);

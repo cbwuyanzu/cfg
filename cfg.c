@@ -5,6 +5,7 @@
 #include <mem.h>
 #include "cfg.h"
 #include <stdio.h>
+#include <ctype.h>
 
 FILE *cfg;
 
@@ -30,7 +31,7 @@ void cfgFilter(char *pInput, char *pOutput, char ignore) {
 
 int cfgStartWith(char *pString, char *pSubString) {
     while (*pSubString != 0) {
-        if (*pString == *pSubString) {
+        if (toupper(*pString) == toupper(*pSubString)) {
             pString++;
             pSubString++;
         } else {
@@ -41,15 +42,18 @@ int cfgStartWith(char *pString, char *pSubString) {
 }
 
 int cfgReadLine(char *pBuffer) {
-    if (fgets(pBuffer, 2048, cfg) == NULL) return -1;
-    cfgFilter(pBuffer, pBuffer, ' ');
-    cfgFilter(pBuffer, pBuffer, '\n');
-    cfgFilter(pBuffer, pBuffer, '\r');
-    cfgFilter(pBuffer, pBuffer, '=');
+    do {
+        if (fgets(pBuffer, 2048, cfg) == NULL) return -1;
+        cfgFilter(pBuffer, pBuffer, ' ');
+        cfgFilter(pBuffer, pBuffer, '\n');
+        cfgFilter(pBuffer, pBuffer, '\r');
+        cfgFilter(pBuffer, pBuffer, '=');
+    } while (pBuffer[0] == '#');
+    // skip the line starts with '#'
     return 0;
 }
 
-int cfgGetString(char *pBuffer, char *pKey, char **ppValue) {
+/*int cfgGetString(char *pBuffer, char *pKey, char **ppValue) {
     fseek(cfg, 0L, SEEK_SET);
     while (0 == cfgReadLine(pBuffer)) {
         if (cfgStartWith(pBuffer, pKey)) {
@@ -57,6 +61,38 @@ int cfgGetString(char *pBuffer, char *pKey, char **ppValue) {
             return 1;
         } else {
 
+        }
+    }
+    return 0;
+}*/
+int cfgGetString(char *pBuffer, char *pGroup, char *pKey, char **ppValue) {
+    fseek(cfg, 0L, SEEK_SET);
+    if (1 == cfgLocateGroup(pBuffer, pGroup)) {
+
+    } else {
+        return 0;
+    }
+    while (0 == cfgReadLine(pBuffer)) {
+        if ('[' == pBuffer[0]) {
+            return 0;
+        }
+        if (cfgStartWith(pBuffer, pKey)) {
+            *ppValue = pBuffer + strlen(pKey);
+            return 1;
+        } else {
+
+        }
+    }
+    return 0;
+}
+
+int cfgLocateGroup(char *pBuffer, char *pGroup) {
+//    fseek(cfg, 0L, SEEK_SET);
+    while (0 == cfgReadLine(pBuffer)) {
+        char temp[32];
+        sprintf(temp, "[%s]", pGroup);
+        if (cfgStartWith(pBuffer, temp)) {
+            return 1;
         }
     }
     return 0;

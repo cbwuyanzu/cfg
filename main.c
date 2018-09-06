@@ -12,8 +12,16 @@ int main(int argc, char *argv[]) {
     if (argc >= 2) {
         cfgOpen(argv[1]);
         for (int j = 2; j < argc; j++) {
-            cfgGetString(buff, argv[j], &pValue);
-            printf("%s is %s\n", argv[j], pValue);
+            if (1 == cfgGetString(buff, "THIS", argv[j], &pValue)) {
+                printf("THIS %s is %s\n", argv[j], pValue);
+            } else {
+                printf("[THIS][%s] not found\n", argv[j]);
+            }
+            if (1 == cfgGetString(buff, "THAT", argv[j], &pValue)) {
+                printf("THAT %s is %s\n", argv[j], pValue);
+            } else {
+                printf("[THAT][%s] not found\n", argv[j]);
+            }
         }
     }
     printf("%d", cfgClose());
